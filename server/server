@@ -19,7 +19,7 @@ do
 		socat -u FILE:$DIRMAIN/.ssl/server.crt tcp-listen:$PORT,reuseaddr
 		socat -u tcp-listen:$PORT,reuseaddr OPEN:$DIRMAIN/.ssl/client.crt,creat
 		echo -e "listening on port $PORT for audio data"
-		arecord -f cd -t wav - | socat openssl-listen:$PORT,reuseaddr,cert=$DIRMAIN/.ssl/server.pem,cafile=$DIRMAIN/.ssl/client.crt - | aplay &
+		arecord -f U8 -r 44100 -t wav - | socat openssl-listen:$PORT,reuseaddr,cert=$DIRMAIN/.ssl/server.pem,cafile=$DIRMAIN/.ssl/client.crt - | aplay &
 	elif [[ $MAIN == "!stop" ]];
 	then
 		killall "socat" > /dev/null 2>&1
